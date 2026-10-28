@@ -1,0 +1,22 @@
+# secrets and local state
+.env
+*.db
+*.db-journal
+data/raw/
+data/models/
+data/demo/
+data/abilities/
+data/telegram_owner
+.claude/settings.local.json
+
+# python
+__pycache__/
+*.pyc
+.venv/
+.pytest_cache/
+.ruff_cache/
+*.egg-info/
+
+.DS_Store
+*.db.bak*
+.env.example

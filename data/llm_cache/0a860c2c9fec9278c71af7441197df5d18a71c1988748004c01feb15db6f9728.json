@@ -1,0 +1,11 @@
+{
+ "data": {
+  "code": "import re\nfrom datetime import datetime\nfrom decimal import Decimal\nfrom dateutil import parser as dateparser\n\n\ndef extract(text: str) -> dict:\n    def must_search(pattern, src, flags=0):\n        m = re.search(pattern, src, flags)\n        if not m:\n            raise ValueError(\"Required label missing\")\n        return m\n\n    def parse_amount(raw):\n        cleaned = raw.replace(\",\", \"\").strip()\n        return float(Decimal(cleaned))\n\n    def parse_date(raw):\n        raw = raw.strip()\n        if re.fullmatch(r\"\\d{2}/\\d{2}/\\d{4}\", raw):\n            return datetime.strptime(raw, \"%d/%m/%Y\").strftime(\"%Y-%m-%d\")\n        dt = dateparser.parse(raw, dayfirst=True)\n        if not dt:\n            raise ValueError(\"Required label missing\")\n        return dt.strftime(\"%Y-%m-%d\")\n\n    amount = None\n    due_date = None\n\n    m_amount = re.search(r\"Total\\s+Amount\\s+Due\\s+Rs\\.?\\s*([\\d,]+(?:\\.\\d{2})?)\", text, re.I)\n    if m_amount:\n        amount = parse_amount(m_amount.group(1))\n    else:\n        m_amount = re.search(r\"Amount\\s+payable\\s+INR\\s*([\\d,]+(?:\\.\\d{2})?)\", text, re.I)\n        if m_amount:\n            amount = parse_amount(m_amount.group(1))\n        else:\n            raise ValueError(\"Required label missing\")\n\n    m_due = re.search(r\"Payment\\s+Due\\s+Date\\s*(\\d{2}/\\d{2}/\\d{4})\", text, re.I)\n    if m_due:\n        due_date = parse_date(m_due.group(1))\n    else:\n        m_due = re.search(r\"Pay\\s+by\\s+([0-3]?\\d\\s+[A-Za-z]{3,9}\\s+\\d{4})\", text, re.I)\n        if m_due:\n            due_date = parse_date(m_due.group(1))\n        else:\n            raise ValueError(\"Required label missing\")\n\n    return {\n        \"type\": \"bill_due\",\n        \"provider\": \"HDFC Bank\",\n        \"amount\": amount,\n        \"currency\": \"INR\",\n        \"due_date\": due_date,\n    }\n",
+  "notes": "Parses both statement layouts by anchoring on amount and due-date labels, with strict failure if labels change."
+ },
+ "tokens": 1606,
+ "cost": 0.0117775,
+ "model": "gpt-5.4",
+ "date_offset": 23,
+ "key": "compile:hdfcbank_net_bill_due:v2:n5:attempt0"
+}
