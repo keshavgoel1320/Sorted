@@ -5,7 +5,7 @@ then writes, tests and switches to its own local code, so it gets cheaper, faste
 
 **🏆 1st place at HackGenesis 2026 (HackIndia), among 146 teams.**
 
-*AzinHack 2026 · Team Not Found: Anish Manchanda, Aryan Thakur, Keshav Goel*
+*Team Not Found: Anish Manchanda, Aryan Thakur, Keshav Goel*
 
 ## The problem
 
