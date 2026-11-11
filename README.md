@@ -3,6 +3,8 @@
 **A household admin assistant that uses AI as a compiler, not an interpreter.** It learns a task with an LLM,
 then writes, tests and switches to its own local code, so it gets cheaper, faster and more private every month.
 
+**🏆 1st place at HackGenesis 2026 (HackIndia), among 146 teams.**
+
 *AzinHack 2026 · Team Not Found: Anish Manchanda, Aryan Thakur, Keshav Goel*
 
 ## The problem
